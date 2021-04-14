@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, ProgressBar, Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -12,18 +12,23 @@ export default function HomePage() {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     // Tính điểm
     const [score, setScore] = useState(0);
+    // Đếm ngược thời gian
+    // const [countDown, setCountDown] = useState(100);
     // Chuyển trang
     const history = useHistory();
     // Cập nhật state ở redux
     const dispatch = useDispatch();
 
-    // Hàm xáo trộn mảng đẻ random ra câu hỏi mỗi lần chơi 
+    // Hàm xáo trộn mảng đẻ random ra câu hỏi mỗi lần chơi
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
+
+    const arrButton = ["option1", "option2", "option3", "option4"];
+    shuffle(arrButton);
 
     // Lấy dữ liệu đổ vào giao diện
     useEffect(() => {
@@ -36,7 +41,6 @@ export default function HomePage() {
             setQuestions(data);
         }
         getData();
-
     }, []);
 
     dispatch(updateTotalQuestion(questions.length));
@@ -54,25 +58,44 @@ export default function HomePage() {
         }
     }
 
-    const arrButton = ["option1", "option2", "option3", "option4"];
-    shuffle(arrButton);
     const randomAnswer = arrButton.map((answer) => (
-        <Button key={answer} className="m-3" onClick={(event) => checkAnswer(event)}>
-            {questions[currentQuestion].[answer]}
+        <Button
+            key={answer}
+            className="m-3"
+            onClick={(event) => checkAnswer(event)}
+        >
+            {questions[currentQuestion][answer]}
         </Button>
     ));
 
+    //
+
+    // function decrement() {
+    //     setCountDown(countDown - 0.5);
+    // }
+    // let timeout = setTimeout(decrement, 1000);
+
     return (
         <div className="container">
-            <h1 className="text-center mt-5">
-                Câu hỏi {currentQuestion + 1} / {questions.length}
-            </h1>
-            <h3 className="text-center mt-5">
-                {questions[currentQuestion]?.question}
-            </h3>
-            <div className="d-flex justify-content-center flex-column mt-5">
-                {randomAnswer}
-            </div>
+            {questions.length === 1 && (
+                <div className="container d-flex justify-content-center loading">
+                    <Spinner animation="border" variant="primary" />
+                </div>
+            )}
+            {questions.length > 1 && (
+                <>
+                    <h2 className="text-center mt-5">
+                        Câu hỏi {currentQuestion + 1} / {questions.length}
+                    </h2>
+                    <ProgressBar className="mt-3" animated now={100} />
+                    <h4 className="text-center mt-3">
+                        {questions[currentQuestion]?.question}
+                    </h4>
+                    <div className="d-flex justify-content-center flex-column mt-3">
+                        {randomAnswer}
+                    </div>
+                </>
+            )}
         </div>
     );
 }

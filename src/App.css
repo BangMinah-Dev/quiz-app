@@ -3,9 +3,14 @@
   width: 375px !important;
 }
 
-/* @media (min-width: 991.99px){
-  .container{
-    border: 1px solid red;
-    width: 50% !important;
-  }
-} */
+.loading{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+div.progress{
+  margin: 0px 12px;
+  height: 10px;
+}

@@ -19,7 +19,7 @@ export default function Result() {
 
     return (
         <div>
-            <h1 className="text-center mt-5">Kết quả</h1>
+            <h1 className="text-center mt-5">Kết Quả</h1>
             <div className="container">
                 <div className="d-flex justify-content-center flex-column mt-5">
                     <h4 className="text-center">Bạn đã trả lời đúng {result} / {totalQuestion} </h4>
