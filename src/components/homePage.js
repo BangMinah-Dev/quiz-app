@@ -61,7 +61,7 @@ export default function HomePage() {
             {questions[currentQuestion].[answer]}
         </Button>
     ));
-    
+
     return (
         <div className="container">
             <h1 className="text-center mt-5">
