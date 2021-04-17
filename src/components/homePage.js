@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { updateResult } from "../features/resultSlice";
 import { updateTotalQuestion } from "../features/totalQuestionSlice";
 
+import CountDown from "./countDown"
+
 export default function HomePage() {
     // Mảng câu hỏi ban đầu
     const [questions, setQuestions] = useState([{}]);
@@ -12,8 +14,6 @@ export default function HomePage() {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     // Tính điểm
     const [score, setScore] = useState(0);
-    // Đếm ngược thời gian
-    // const [countDown, setCountDown] = useState(100);
     // Chuyển trang
     const history = useHistory();
     // Cập nhật state ở redux
@@ -53,8 +53,9 @@ export default function HomePage() {
             history.push("/result");
         }
         if (event.target.outerText === questions[currentQuestion]?.answer) {
-            setScore(score + 1);
             dispatch(updateResult(score + 1));
+            setCurrentQuestion(currentQuestion + 1);
+            setScore(score + 1);
         }
     }
 
@@ -68,13 +69,6 @@ export default function HomePage() {
         </Button>
     ));
 
-    //
-
-    // function decrement() {
-    //     setCountDown(countDown - 0.5);
-    // }
-    // let timeout = setTimeout(decrement, 1000);
-
     return (
         <div className="container">
             {questions.length === 1 && (
@@ -87,7 +81,7 @@ export default function HomePage() {
                     <h2 className="text-center mt-5">
                         Câu hỏi {currentQuestion + 1} / {questions.length}
                     </h2>
-                    <ProgressBar className="mt-3" animated now={100} />
+                    <CountDown></CountDown>
                     <h4 className="text-center mt-3">
                         {questions[currentQuestion]?.question}
                     </h4>
